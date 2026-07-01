@@ -5,18 +5,12 @@ on:
 jobs:
   download:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - uses: actions/checkout@v3
       - name: Download File
         run: |
-          mkdir -p downloads
-          curl -L "${{ github.event.client_payload.url }}" -o "downloads/file_from_proxy"
-      - name: Commit and Push
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add downloads/file_from_proxy
-          git commit -m "Proxy download: ${{ github.event.client_payload.url }}"
-          git push
+          curl -L "${{ github.event.client_payload.url }}" -o "downloaded_file"
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: downloaded_file
+          path: downloaded_file
