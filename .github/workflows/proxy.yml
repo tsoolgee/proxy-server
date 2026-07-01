@@ -1,0 +1,14 @@
+name: Proxy Handler
+on:
+  repository_dispatch:
+    types: [proxy_request]
+jobs:
+  process_request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Execute Proxy Logic
+        run: |
+          echo "Target URL: ${{ github.event.client_payload.url }}"
+          curl -L ${{ github.event.client_payload.url }}
